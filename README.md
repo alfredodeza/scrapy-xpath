@@ -127,3 +127,25 @@ Gold Steve Smith
 Silver Tim Forsyth
 Bronze Takahiro Kimino
 ```
+
+## Efficiency
+
+We've been using a pre-downloaded file available in this repo for the examples and notebook exercises. But, so far, I haven't explained _why_ this is a good idea or why you would want to try it out.
+
+Usually, a spider will have a set of URLs that it will need to request when scrapping. However, there are several problems with this approach when starting a scrapping project to gather data. Let's go into some of the details regarding parsing live websites and requesting data each time.
+
+### First iterations are always hard
+In the current repo, I already solved how to get to the data. However, when you start working with a live website, you will have to take the time to find how to get to the data. Then, every time you "try it out" again, you need to make a live request to the website and download its contents.
+
+This is not efficient, and it can be time-consuming. It also puts unnecessary strain on the webserver hosting the website. Being "nice" when parsing requires being aware that websites are resources that take money and effort to be available. Preventing an unnecessary burden to these websites is suitable for webservers and efficient for you since it is faster to read from a file. Every single time you need to start a `scrapy shell` again, it will be an order of magnitude faster.
+
+### Testing
+Websites change, and you might be getting some changes that are disruptive to your parsing. You can tweak the HTML and then use that tweaked file to run the spider against it by downloading the contents directly. This allows you to build a robust spider that can handle oddities on website content. 
+Changing HTML on the fly would be very difficult to get right instead of just changing the file directly.
+
+### Speed
+I've already mentioned that parsing a local file is an order of magnitude faster. There are always problems with scrapping, like network errors, downtime on webservers, or even memory errors when parsing lots of data.
+Imagine you have to parse several thousand pages and get into an unrecoverable error in the middle. It would be time-consuming to have to start from the very beginning. 
+
+### Updating the spider
+If the requirements of the gathered data change, then you don't want to have to re-parse all those pages again. Of course, this depends if the data keeps changing. When updating the data requirements, you can use the same pages available on disk to do this. 
