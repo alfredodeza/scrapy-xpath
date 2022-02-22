@@ -132,7 +132,7 @@ Bronze Takahiro Kimino
 
 We've been using a pre-downloaded file available in this repo for the examples and notebook exercises. But, so far, I haven't explained _why_ this is a good idea or why you would want to try it out.
 
-Usually, a spider will have a set of URLs that it will need to request when scrapping. However, there are several problems with this approach when starting a scrapping project to gather data. Let's go into some of the details regarding parsing live websites and requesting data each time.
+Usually, a spider will have a set of URLs that it will need to request when scraping. However, there are several problems with this approach when starting a scraping project to gather data. Let's go into some of the details regarding parsing live websites and requesting data each time.
 
 ### First iterations are always hard
 In the current repo, I already solved how to get to the data. However, when you start working with a live website, you will have to take the time to find how to get to the data. Then, every time you "try it out" again, you need to make a live request to the website and download its contents.
@@ -144,7 +144,7 @@ Websites change, and you might be getting some changes that are disruptive to yo
 Changing HTML on the fly would be very difficult to get right instead of just changing the file directly.
 
 ### Speed
-I've already mentioned that parsing a local file is an order of magnitude faster. There are always problems with scrapping, like network errors, downtime on webservers, or even memory errors when parsing lots of data.
+I've already mentioned that parsing a local file is an order of magnitude faster. There are always problems with scraping, like network errors, downtime on webservers, or even memory errors when parsing lots of data.
 Imagine you have to parse several thousand pages and get into an unrecoverable error in the middle. It would be time-consuming to have to start from the very beginning. 
 
 ### Updating the spider
