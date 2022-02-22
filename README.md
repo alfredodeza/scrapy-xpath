@@ -14,9 +14,9 @@ Objective: to extract the names and medal (or position) from the top three High 
 Install _requirements.txt_ in a virtual environment
 
 ```
-$ python3 -m venv venv
-$ source venv/bin/activate
-$ pip install -r requirements.txt
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
 ```
 
 Get started with scrapy: https://docs.scrapy.org/en/latest/intro/tutorial.html
@@ -24,11 +24,11 @@ Get started with scrapy: https://docs.scrapy.org/en/latest/intro/tutorial.html
 
 ## Create a new project and a new spider
 
-Scrapy has scaffolding that helps you get started with everything you need for a scraping project. Create a project and then a _spider_. 
+Scrapy has scaffolding that helps you get started with everything you need for a scraping project. Create a project and then a _spider_.
 
 ```
-$ scrapy startproject wikipedia
-$ scrapy genspider medalists wikipedia.org
+scrapy startproject wikipedia
+scrapy genspider medalists wikipedia.org
 ```
 
 Note that the name of the project and the spider must be different. Otherwise the spider will not get created.
@@ -38,10 +38,12 @@ Note that the name of the project and the spider must be different. Otherwise th
 To help you building the scraping, use the scrapy shell (an interactive scraping shell) to work with the HTML files. The scrapy CLI allows you to use absolute paths. Go to the root of this repo and run the following to open up the local HTML file:
 
 ```
-$ scrapy shell  "./html/1992_World_Junior_Championships_in_Athletics_–_Men's_high_jump"
+scrapy shell  "./html/1992_World_Junior_Championships_in_Athletics_–_Men's_high_jump"
 ```
 
-Note that the quotes are required for the shell to work and escape the single quote within the HTML page. Confirm that the `response.url` points to the local path:
+Note that the quotes are required for the shell to work and escape the single quote within the HTML page. The shell uses a IPython as the shell (Jupyter-like output in the terminal) so be aware that when copying and pasting, you might need to reformat.
+
+Confirm that the `response.url` points to the local path:
 
 ```
 In [1]: response.url
@@ -52,8 +54,8 @@ Next, try to find the interesting table that holds the data we need. The target 
 
 ```
 In [18]: for table in response.xpath('//table'):
-    ...:     print(table, len(table.xpath('tbody').xpath('tr')))
-    ...:
+             print(table, len(table.xpath('tbody').xpath('tr')))
+
 <Selector xpath='//table' data='<table class="sidebar-games-events si...'> 32
 <Selector xpath='//table' data='<table class="wikitable" style="text-...'> 3
 <Selector xpath='//table' data='<table class="wikitable sortable" sty...'> 20
@@ -71,7 +73,7 @@ Out[24]:
  <Selector xpath='tr' data='<tr>\n<td bgcolor="silver"><b>Silver</...'>,
  <Selector xpath='tr' data='<tr>\n<td bgcolor="CC9966"><b>Bronze</...'>]
 ```
-That looks just right. 
+That looks just right.
 
 Make it easy to read and type by assigning the interesting table to a variable, and then try to find the "gold", "silver", and "bronze" values that will confirm the position of each athlete. These are in the `bgcolor` attribute of the `td` tag:
 
@@ -97,10 +99,10 @@ Now put everything together to loop over the tables and extract the information:
 
 ```
 In [75]: for tr in table.xpath('tr'):
-    ...:     print(tr.xpath('td/@bgcolor').extract()[0],
-    ...:     tr.xpath('td/a/text()').extract()[0]
-    ...:     )
-    ...:
+             print(tr.xpath('td/@bgcolor').extract()[0],
+             tr.xpath('td/a/text()').extract()[0]
+             )
+
 gold Steve Smith
 silver Tim Forsyth
 CC9966 Takahiro Kimino
@@ -119,10 +121,10 @@ Out[76]:
 
  ```
  In [81]: for tr in table.xpath('tr'):
-    ...:     print(tr.xpath('td/b/text()').extract()[0],
-    ...:     tr.xpath('td/a/text()').extract()[0]
-    ...:     )
-    ...:
+             print(tr.xpath('td/b/text()').extract()[0],
+             tr.xpath('td/a/text()').extract()[0]
+             )
+
 Gold Steve Smith
 Silver Tim Forsyth
 Bronze Takahiro Kimino
@@ -140,12 +142,12 @@ In the current repo, I already solved how to get to the data. However, when you 
 This is not efficient, and it can be time-consuming. It also puts unnecessary strain on the webserver hosting the website. Being "nice" when parsing requires being aware that websites are resources that take money and effort to be available. Preventing an unnecessary burden to these websites is suitable for webservers and efficient for you since it is faster to read from a file. Every single time you need to start a `scrapy shell` again, it will be an order of magnitude faster.
 
 ### Testing
-Websites change, and you might be getting some changes that are disruptive to your parsing. You can tweak the HTML and then use that tweaked file to run the spider against it by downloading the contents directly. This allows you to build a robust spider that can handle oddities on website content. 
+Websites change, and you might be getting some changes that are disruptive to your parsing. You can tweak the HTML and then use that tweaked file to run the spider against it by downloading the contents directly. This allows you to build a robust spider that can handle oddities on website content.
 Changing HTML on the fly would be very difficult to get right instead of just changing the file directly.
 
 ### Speed
 I've already mentioned that parsing a local file is an order of magnitude faster. There are always problems with scraping, like network errors, downtime on webservers, or even memory errors when parsing lots of data.
-Imagine you have to parse several thousand pages and get into an unrecoverable error in the middle. It would be time-consuming to have to start from the very beginning. 
+Imagine you have to parse several thousand pages and get into an unrecoverable error in the middle. It would be time-consuming to have to start from the very beginning.
 
 ### Updating the spider
-If the requirements of the gathered data change, then you don't want to have to re-parse all those pages again. Of course, this depends if the data keeps changing. When updating the data requirements, you can use the same pages available on disk to do this. 
+If the requirements of the gathered data change, then you don't want to have to re-parse all those pages again. Of course, this depends if the data keeps changing. When updating the data requirements, you can use the same pages available on disk to do this.
