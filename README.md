@@ -19,6 +19,8 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
+Note: You might get installation warnings about `PyDispatcher` or `Protego`. Ensure your installation works correctly by opening a Python prompt and importing the `scrapy` library. It should work without issues.
+
 Get started with scrapy: https://docs.scrapy.org/en/latest/intro/tutorial.html
 
 
