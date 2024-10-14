@@ -6,3 +6,4 @@ matplotlib-inline==0.1.6
 pyOpenSSL==22.0.0
 cryptography==37.0.4
 Twisted==17.9.0
+setuptools==75.1.0
